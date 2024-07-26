@@ -25,6 +25,9 @@
 - [Очередь заданий (tksva_q)](https://github.com/DSTsvetkovTRCONT/tksva_q)
 - [Веб-интерфейс (tksva)](https://github.com/DSTsvetkovTRCONT/tksva)
 
+#### Использованные технологии
+Python3.10, Ubuntu
+
 #### Описание алгоритма
 Инспектор запускается каждый час с помощью Cron.
 На данном этапе развития проекта поддерживается актаульность данных таблицы DWH ***audit._sales__execution_orders***.
