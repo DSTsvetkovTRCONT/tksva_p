@@ -65,6 +65,7 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                             password=os.environ.get('CLICK_PWD'),
                             secure=True, verify=False)
 
+
     with dwh_connection as conn:
         logger.info('Создаём по первой дороге audit._sales__execution_orders_tmp')
         conn.execute(sql_sales__execution_orders.sql_1(dwh_table_info_railway_names_list[0]))
