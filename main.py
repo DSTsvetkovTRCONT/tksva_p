@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from dwh import (sales_execution_orders_source_info,
                  sales_execution_orders_processed_info,
+                 sales_execution_orders_tmp_info,
                  update_dwh_table_info,
                  gives_information_status,
                  wants_to_refresh)
@@ -85,6 +86,11 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                 except Exception:
                     logger.exception()
                     return False
+                
+        if sales_execution_orders_source_info() != sales_execution_orders_tmp_info():
+            return False
+                
+
 
         dwh_connection = Client(host=os.environ.get('CLICK_HOST'),
                                 port=os.environ.get('CLICK_PORT'),

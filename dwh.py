@@ -207,6 +207,64 @@ def sales_execution_orders_processed_info():
         return False
 
 
+def sales_execution_orders_tmp_info():
+    """
+    Получаем информацию о состоянии таблицы DWH audit._sales__execution_orders_tmp
+    """
+
+    logger.info('Получаем информацию о состоянии таблицы '
+                'DWH audit._sales__execution_orders_tmp')
+
+    try:
+
+        sql = """SELECT
+                    count() AS rows_qty,
+                    min(`SVOD.Дата отправки`) AS min_date,
+                    max(`SVOD.Дата отправки`) AS max_date,
+                    replace(
+                        arrayStringConcat(
+                            arraySort(
+                                groupArray(
+                                    DISTINCT `Дор. Отправления`)
+                            ),
+                            '|'),
+                        '"',
+                        '') AS railway_names,
+                    replace(
+                        arrayStringConcat(
+                            arraySort(
+                                groupArray(
+                                    DISTINCT `Ст. Отправления`)
+                            ),
+                            '|'),
+                        '"',
+                        '') AS station_names
+                FROM
+                    audit._sales__execution_orders_tmp"""
+
+        dwh_connection = Client(host=os.environ.get('CLICK_HOST'),
+                                port=os.environ.get('CLICK_PORT'),
+                                database=os.environ.get('CLICK_DBNAME'),
+                                user=os.environ.get('CLICK_USER'),
+                                password=os.environ.get('CLICK_PWD'),
+                                secure=True, verify=False)
+
+        with dwh_connection:
+            dwh_table_info = dwh_connection.execute(sql)
+
+        dwh_table_info_dict = {"rows_qty": dwh_table_info[0][0],
+                               "min_date": dwh_table_info[0][1].strftime('%Y-%m-%d %H:%M:%S'),
+                               "max_date": dwh_table_info[0][2].strftime('%Y-%m-%d %H:%M:%S'),
+                               "railway_names": dwh_table_info[0][3],
+                               "station_names": dwh_table_info[0][4]}
+
+        return dwh_table_info_dict
+
+    except Exception:
+        logger.exception()
+        return False
+
+
 def table_info_starter(table_names_list):
     """При появлении новых таблиц в списке таблиц,
     которые должен обновлять инспектор,
