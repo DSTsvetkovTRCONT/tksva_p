@@ -84,7 +84,8 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                     # if i == 2: break
                     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 except Exception:
-                    logger.exception()
+                    logger.exception(f'Шаг {i} из {n}. Добавляем в audit._sales__execution_orders_tmp '
+                                f'данные по дороге {dwh_table_info_railway_name}')
                     return False
 
         sales_execution_orders_source_dict = sales_execution_orders_source_info()
