@@ -11,7 +11,15 @@ def sql_0(railway_name):
 			container_foot AS `Тип контейнера`,
 			shipment_document__number AS `Отправка`,
 			goods_etsng AS `Наименование груза`,
-			operation_datetime AS `SVOD.Дата отправки`
+			operation_datetime AS `SVOD.Дата отправки`,
+			ownerships,
+			Owner_ev,
+			ownerships_new,
+			ownerships_short,
+			ownerships_type,
+			wagon_owner,
+			container_owner,
+			wagon_owner_new
 		FROM 
 			audit.sales__execution_orders
 		WHERE 
