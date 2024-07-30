@@ -86,11 +86,19 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                 except Exception:
                     logger.exception()
                     return False
-                
-        if sales_execution_orders_source_info() != sales_execution_orders_tmp_info():
-            return False
-                
 
+        sales_execution_orders_source_dict = sales_execution_orders_source_info()
+        sales_execution_orders_tmp_dict = sales_execution_orders_tmp_info()
+
+        logger.info('Проверяем, чтобы собранные данные соответствовали исходнику')
+        if sales_execution_orders_source_dict != sales_execution_orders_tmp_dict:
+            logger.info(f'Собранные данные не соответствуют исходнику:\n'
+                        f'rows_qty: {sales_execution_orders_source_dict["rows_qty"] == sales_execution_orders_tmp_dict["rows_qty"]}\n'
+                        f'min_date: {sales_execution_orders_source_dict["min_date"] == sales_execution_orders_tmp_dict["min_date"]}\n'
+                        f'max_date: {sales_execution_orders_source_dict["max_date"] == sales_execution_orders_tmp_dict["max_date"]}\n'
+                        f'railway_names: {sales_execution_orders_source_dict["railway_names"] == sales_execution_orders_tmp_dict["railway_names"]}\n'
+                        f'station_names: {sales_execution_orders_source_dict["station_names"] == sales_execution_orders_tmp_dict["station_names"]}')
+            return False
 
         dwh_connection = Client(host=os.environ.get('CLICK_HOST'),
                                 port=os.environ.get('CLICK_PORT'),

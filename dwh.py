@@ -101,7 +101,7 @@ def sales_execution_orders_source_info():
     """
     Получаем информацию о состоянии таблицы DWH audit.sales__execution_orders
     """
-    logger.info('Получаем информацию о состоянии таблицы'
+    logger.info('Получаем информацию о состоянии таблицы '
                 'DWH audit.sales__execution_orders')
     try:
         sql = """SELECT
