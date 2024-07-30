@@ -121,7 +121,7 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                                     FROM
                                         audit._sales__execution_orders_tmp)""")
             except Exception:
-                logger.exception()
+                logger.exception("")
                 return False
 
         dwh_connection = Client(host=os.environ.get('CLICK_HOST'),
@@ -139,7 +139,7 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                 logger.warning('Переименовать не получилось, потому что '
                                'audit._sales__execution_orders уже существует')
             except Exception:
-                logger.exception()
+                logger.exception("")
 
         # Блокируем возможность запускать задачи на выгрузку данных
         wants_to_refresh(True)
@@ -187,7 +187,7 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                                 audit._sales__execution_orders_tmp AND
                                 audit._sales__execution_orders;""")
             except Exception:
-                logger.exception()
+                logger.exception("")
                 return False
 
         # Разблокируем возможность запускать задачи на выгрузку данных
@@ -198,7 +198,7 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
                 logger.info('Удаляем audit._sales__execution_orders_tmp')
                 conn.execute("DROP TABLE audit._sales__execution_orders_tmp;")
             except Exception:
-                logger.exception()
+                logger.exception("")
 
         return True
 
@@ -235,4 +235,4 @@ if __name__ == "__main__":
             logger.info('Таблица audit._sales__execution_orders '
                         'содержит актуальные данные.')
     except Exception:
-        logger.exception()
+        logger.exception("")

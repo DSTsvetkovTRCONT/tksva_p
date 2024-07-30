@@ -145,7 +145,7 @@ def sales_execution_orders_source_info():
 
         return dwh_table_info_dict
     except Exception:
-        logger.exception()
+        logger.exception("")
         return False
 
 
@@ -203,7 +203,7 @@ def sales_execution_orders_processed_info():
         return dwh_table_info_dict
 
     except Exception:
-        logger.exception()
+        logger.exception("")
         return False
 
 
@@ -261,7 +261,7 @@ def sales_execution_orders_tmp_info():
         return dwh_table_info_dict
 
     except Exception:
-        logger.exception()
+        logger.exception("")
         return False
 
 
