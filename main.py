@@ -48,24 +48,27 @@ def audit_sales__execution_orders_refresher(sales_execution_orders_source_info_d
 
     dwh_table_info_railway_names_list = sales_execution_orders_source_info_dict['railway_names'].split("|")
 
-    dwh_connection = Client(host=os.environ.get('CLICK_HOST'),
-                            port=os.environ.get('CLICK_PORT'),
-                            database=os.environ.get('CLICK_DBNAME'),
-                            user=os.environ.get('CLICK_USER'),
-                            password=os.environ.get('CLICK_PWD'),
-                            secure=True, verify=False)
+    dwh_connection = Client(
+        host=os.environ.get('CLICK_HOST'),
+        port=os.environ.get('CLICK_PORT'),
+        database=os.environ.get('CLICK_DBNAME'),
+        user=os.environ.get('CLICK_USER'),
+        password=os.environ.get('CLICK_PWD'),
+        secure=True, verify=False
+        )
 
     with dwh_connection as conn:
         logger.info('Удаляем audit._sales__execution_orders_tmp')
         conn.execute("DROP TABLE IF EXISTS audit._sales__execution_orders_tmp")
 
-    dwh_connection = Client(host=os.environ.get('CLICK_HOST'),
-                            port=os.environ.get('CLICK_PORT'),
-                            database=os.environ.get('CLICK_DBNAME'),
-                            user=os.environ.get('CLICK_USER'),
-                            password=os.environ.get('CLICK_PWD'),
-                            secure=True, verify=False)
-
+    dwh_connection = Client(
+        host=os.environ.get('CLICK_HOST'),
+        port=os.environ.get('CLICK_PORT'),
+        database=os.environ.get('CLICK_DBNAME'),
+        user=os.environ.get('CLICK_USER'),
+        password=os.environ.get('CLICK_PWD'),
+        secure=True, verify=False
+        )
 
     with dwh_connection as conn:
         logger.info('Создаём по первой дороге audit._sales__execution_orders_tmp')
@@ -222,7 +225,9 @@ if __name__ == "__main__":
             # test_action = 7/0
 
         # if sales_execution_orders_source_info_dict == sales_execution_orders_processed_info_dict:
-        if (sales_execution_orders_source_info_dict != sales_execution_orders_processed_info_dict):
+        if ((sales_execution_orders_source_info_dict["rows_qty"] > sales_execution_orders_processed_info_dict["rows_qty"]) or
+            ((sales_execution_orders_source_info_dict["rows_qty"] == sales_execution_orders_processed_info_dict["rows_qty"]) and
+            (sales_execution_orders_source_info_dict != sales_execution_orders_processed_info_dict))):
             logger.info('Таблица audit._sales__execution_orders '
                         'нуждается в обновлении.')
             if audit_sales__execution_orders_refresher(sales_execution_orders_source_info_dict):
